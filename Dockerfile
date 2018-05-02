@@ -16,7 +16,9 @@ RUN apt-get install -y \
     libedit-dev \
     libicu-dev \
     libssl-dev \
-    freetds-dev
+    freetds-dev \
+    libc-client-dev \
+    libkrb5-dev
 
 RUN docker-php-ext-install -j$(nproc) mcrypt \
     && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ \
@@ -35,34 +37,42 @@ RUN docker-php-ext-install -j$(nproc) mcrypt \
     && docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu \
     && docker-php-ext-install -j$(nproc) pdo_dblib
 
+# Imap
+RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+    && docker-php-ext-install imap
+
+# ZMQ
 RUN apt-get -y install libzmq-dev \
     && pecl install zmq-1.1.3 \
     && docker-php-ext-enable zmq
 
+# RAR
 RUN  pecl install rar \
     && docker-php-ext-enable rar
 
+# Redis
 RUN pecl install -o -f redis \
     && docker-php-ext-enable redis
-
+# Data Structures
 RUN pecl install -o -f ds \
     && docker-php-ext-enable ds
 
+# Blackfire
 RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
     && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version \
     && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp \
     && mv /tmp/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
     && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > $PHP_INI_DIR/conf.d/blackfire.ini
 
-# xdebug
+# XDebug
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini
 
-# composer
+# Composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-#supervisor
+# Supervisor
 RUN apt-get install -y supervisor
 
 # clean for keep up small image
