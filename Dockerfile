@@ -69,11 +69,15 @@ RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini
 
-# Composer
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+# MongoDB
+RUN pecl install mongodb
+RUN docker-php-ext-enable mongodb
 
 # Supervisor
 RUN apt-get install -y supervisor
+
+# Composer
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
 # clean for keep up small image
 RUN docker-php-source delete \
