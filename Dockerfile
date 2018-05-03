@@ -37,6 +37,23 @@ RUN docker-php-ext-install -j$(nproc) mcrypt \
     && docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu \
     && docker-php-ext-install -j$(nproc) pdo_dblib
 
+# Install datastax php-driver for cassandra
+RUN git clone https://github.com/datastax/php-driver.git /usr/src/datastax-php-driver && \
+    cd /usr/src/datastax-php-driver && \
+    git checkout --detach v1.2.2 && \
+    git submodule update --init && \
+    cd ext && \
+    ./install.sh && \
+    echo extension=cassandra.so > /usr/local/etc/php/conf.d/cassandra.ini
+
+# Install PHP extensions
+RUN docker-php-ext-install zip mbstring opcache bcmath && \
+    echo extension=bcmath.so > /usr/local/etc/php/conf.d/docker-php-ext-bcmath.ini && \
+    pecl install apcu-5.1.5 && \
+    echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini && \
+    pecl install uuid && \
+    echo extension=uuid.so > /usr/local/etc/php/conf.d/uuid.ini
+
 # Imap
 RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install imap
