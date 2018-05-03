@@ -18,7 +18,8 @@ RUN apt-get install -y \
     libssl-dev \
     freetds-dev \
     libc-client-dev \
-    libkrb5-dev
+    libkrb5-dev \
+    uuid-dev
 
 RUN docker-php-ext-install -j$(nproc) mcrypt \
     && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ \
@@ -38,8 +39,7 @@ RUN docker-php-ext-install -j$(nproc) mcrypt \
     && docker-php-ext-install -j$(nproc) pdo_dblib
 
 # Install PHP extensions
-RUN docker-php-ext-install zip mbstring opcache bcmath && \
-    echo extension=bcmath.so > /usr/local/etc/php/conf.d/docker-php-ext-bcmath.ini && \
+RUN docker-php-ext-install zip mbstring opcache && \
     pecl install apcu-5.1.5 && \
     echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini && \
     pecl install uuid && \
