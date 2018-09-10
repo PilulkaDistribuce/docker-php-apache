@@ -87,6 +87,31 @@ RUN apt-get install -y supervisor
 # Composer
 RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
+RUN apt-get update && apt-get -y upgrade
+
+# Install curl
+RUN apt-get -y install curl ruby-full gnupg
+
+# Install scss-lint
+RUN gem install scss_lint
+
+# Update sources list
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+# Upgrade
+RUN apt-get install -y apt-utils
+
+# Install additional sofware
+RUN apt-get -y install git mc htop nodejs
+
+# Install gulp
+RUN npm install gulp-cli -g
+RUN npm install gulp -g
+RUN npm install gulp-yarn --save-dev
+RUN npm install gulp-util
+
 # clean for keep up small image
 RUN docker-php-source delete \
     && apt-get -y autoclean \
