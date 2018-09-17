@@ -50,7 +50,7 @@ RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install imap
 
 # ZMQ
-RUN apt-get -y install libzmq-dev \
+RUN apt-get -y install libzmq3-dev \
     && pecl install zmq-1.1.3 \
     && docker-php-ext-enable zmq
 
@@ -115,8 +115,9 @@ RUN apt-get -y install nodejs
 # Install gulp
 RUN npm install gulp-cli -g
 RUN npm install gulp -g
-RUN npm install gulp-yarn --save-dev
-RUN npm install gulp-util
+RUN npm install gulp-yarn -g --save-dev
+RUN npm install gulp-util -g
+RUN npm install apiaryio -g
 
 
 RUN a2enmod rewrite
