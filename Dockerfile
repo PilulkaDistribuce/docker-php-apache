@@ -120,5 +120,6 @@ RUN npm install gulp-yarn -g --save-dev
 RUN npm install gulp-util -g
 RUN npm install apiaryio -g
 
+COPY docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 
 RUN a2enmod rewrite
