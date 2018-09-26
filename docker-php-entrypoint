@@ -3,9 +3,9 @@ set -e
 
 # Execute all init scripts
 if [ -d /init.d ]; then
-for f in /init.d/*.sh; do
-    bash "$f"
-done
+    for f in /init.d/*.sh; do
+        bash "$f"
+    done
 fi
 
 # first arg is `-f` or `--some-option`
