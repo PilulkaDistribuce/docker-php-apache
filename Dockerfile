@@ -76,6 +76,7 @@ RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini
+RUN echo "session.gc_maxlifetime=1209600" >> /usr/local/etc/php/php.ini
 
 # MongoDB
 RUN pecl install mongodb
