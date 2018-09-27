@@ -61,9 +61,19 @@ RUN  pecl install rar \
 # Redis
 RUN pecl install -o -f redis \
     && docker-php-ext-enable redis
+
 # Data Structures
 RUN pecl install -o -f ds \
     && docker-php-ext-enable ds
+
+# Sockets
+RUN docker-php-ext-install sockets \
+    && docker-php-ext-enable sockets
+
+# Event
+RUN apt-get -y install libevent-dev \
+    && pecl install -o -f event \
+    && docker-php-ext-enable event    
 
 # Blackfire
 RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
