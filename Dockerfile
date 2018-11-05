@@ -96,7 +96,9 @@ RUN docker-php-ext-enable mongodb
 RUN apt-get install -y supervisor
 
 # Composer
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer \
+    && composer global require hirak/prestissimo
 
 RUN apt-get update && apt-get -y upgrade
 
