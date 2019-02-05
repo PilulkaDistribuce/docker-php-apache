@@ -19,10 +19,13 @@ services:
   web:
     build: .
     volumes:
-      - ./esho.sh:/init.d/esho.sh
+      - ./echo.sh:/init.d/echo.sh
+    ports:
+      - 8080:80
+      - 8443:443
 ```
 
-will produce `Hello World!` on container start.
+Will produce `Hello World!` on container start.
 
 *Where to use it?*
 
