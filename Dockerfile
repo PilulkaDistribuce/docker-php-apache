@@ -19,7 +19,8 @@ RUN apt-get install -y \
     freetds-dev \
     libc-client-dev \
     libkrb5-dev \
-    uuid-dev
+    uuid-dev \
+    rsyslog
 
 RUN docker-php-ext-install -j$(nproc) mcrypt \
     && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ \
