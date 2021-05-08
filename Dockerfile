@@ -99,6 +99,7 @@ RUN apt-get install -y supervisor
 # Composer
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/bin/composer \
+    && composer self-update --2 \
     && composer global require hirak/prestissimo \
     && composer global require symplify/monorepo-builder \
     && ln -s /root/.composer/vendor/bin/* /usr/local/bin/
